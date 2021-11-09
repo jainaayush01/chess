@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const URL = 'http://localhost:8000/';
+const URL = 'https://chess-backend.jainaayush01.repl.co/';
 
 const socket = io(URL);
 
