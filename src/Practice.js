@@ -9,11 +9,11 @@ const chessboardStyle = {
   justifyContent: "space-around",
   alignItems: "center",
   flexWrap: "wrap",
-  width: "100vw",
   marginTop: 30,
   marginBottom: 10,
 }
 
+const maxWidth = 500;
 
 const game = new Chess();
 
@@ -59,8 +59,6 @@ function Practice() {
       to: targetSquare,
       promotion: "q"
     });
-
-    console.log(move);
 
     if (move === null) return;
     if (game.game_over()) {
@@ -109,9 +107,6 @@ function Practice() {
       promotion: "q"
     });
 
-    console.log(move);
-
-
     if (move === null) return;
 
     if (game.game_over()) {
@@ -158,6 +153,12 @@ function Practice() {
         onDragOverSquare={handleOnDragOverSquare}
         squareStyles={squareStyles}
         dropSquareStyle={dropSquareStyle}
+        // width={maxWidth}
+        calcWidth={(size) => 
+          (size.screenWidth > maxWidth && size.screenHeight > maxWidth)
+            ? (Math.min(size.screenWidth, size.screenHeight) - 100)
+            : (Math.min(size.screenWidth, size.screenHeight))
+        }
       />
     </div>
   );

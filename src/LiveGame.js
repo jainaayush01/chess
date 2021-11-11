@@ -10,12 +10,16 @@ import './LiveGame.css'
 
 const chessboardStyle = {
   display: "flex",
-  justifyContent: "space-around",
+  // justifyContent: "space-around",
   alignItems: "center",
   flexWrap: "wrap",
   marginTop: 10,
-  marginBottom: 10
+  marginBottom: 10,
+  marginLeft: 40
 }
+
+
+const maxWidth = 500;
 
 let game = new Chess();
 
@@ -51,6 +55,16 @@ function LiveGame() {
         setOrientation('black')
       }
     }
+
+    socket.on("playerLeft", () => {
+      console.log('playerLeft');
+      history.push({
+        pathname: `/room`
+      })
+      alert('Opponent has left the game');
+      return;
+    })
+
     socket.on("status", statusUpdate => {
       alert(statusUpdate)
       if (statusUpdate === 'This game session does not exist.' || statusUpdate === 'There are already 2 people playing in this room.') {
@@ -165,13 +179,13 @@ function LiveGame() {
   };
 
   const handleOnSquareClick = (square) => {
-    let piece = game.get(square);
-    if (!piece) {
-      setSquareStyles(squareStyling({ pieceSquare: square, gameHistory: game.history({ verbose: true }) }));
+    setSquareStyles(squareStyling({ pieceSquare: square, gameHistory: game.history({ verbose: true }) }));
+    setPieceSquare(square);
+
+    if(!draggable) {
       return;
     }
-    piece = piece.type;
-    setPieceSquare(square);
+
     let move = game.move({
       from: pieceSquare,
       to: square,
@@ -180,10 +194,11 @@ function LiveGame() {
 
     if (move === null) return;
 
+    socket.emit('playMove', { gameId: gameId, socketId: mySocketId, from: move.from, to: move.to, promotion: "q" });
     if (game.game_over()) {
       alert('game over');
     }
-    socket.emit('playMove', { gameId: gameId, socketId: mySocketId, from: move.from, to: move.to, promotion: "q" });
+    
     setFenString(game.fen())
     setGameHistory(game.history({ verbose: true }));
     setPieceSquare("");
@@ -230,6 +245,12 @@ function LiveGame() {
               dropSquareStyle={dropSquareStyle}
               draggable={draggable}
               orientation={orientation}
+              // width={maxWidth}
+              calcWidth={
+                (size) => ( size.screenWidth > maxWidth && size.screenHeight > maxWidth)
+                  ? (Math.min(size.screenWidth, size.screenHeight) - 100)
+                  : (Math.min(size.screenWidth, size.screenHeight))
+              }
             />
           </div>
           <Typography className="username" variant="h6">{orientation === 'white' ? gameInfo.p1Username : gameInfo.p2Username}</Typography>
