@@ -1,8 +1,10 @@
 import io from 'socket.io-client';
 
-const URL = 'https://chess-backend.jainaayush01.repl.co/';
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-const socket = io(URL);
+const socket = io(REACT_APP_BACKEND_URL);
+
+console.log(REACT_APP_BACKEND_URL);
 
 var mySocketId;
 
