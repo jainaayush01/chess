@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 import { Button, AppBar, Toolbar, IconButton, Typography, MenuItem } from '@material-ui/core';
 import { Menu as MenuIcon } from "@material-ui/icons";
@@ -18,19 +18,33 @@ const linkStyles = {
 
 function App() {
   const [username, setUsername] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [auth, setAuth] = useState(false);
   const handleSubmit = () => {
     let user = document.querySelector("#username").value;
-    console.log(user);
+    let remMe = document.querySelector("#rememberMe").checked;
     if(user === "") {
       return
     }
     else {
+      localStorage.setItem('rememberMe', remMe)
+      localStorage.setItem('username', remMe ? user : '');
       setUsername(user);
+      setRememberMe(remMe);
       setAuth(true);
     }
   }
+
+  useEffect(() => {
+    let remMe = localStorage.getItem('rememberMe') === 'true';
+    let user = localStorage.getItem('username');
+    if(remMe){
+      setUsername(user);
+      setAuth(true);
+      setRememberMe(remMe);
+    }
+  }, [])
 
   return (
     <div className="App">
@@ -61,7 +75,8 @@ function App() {
       {
         !auth 
         ? <div className="auth">
-            Name: <input type="text" id="username" />
+            <div>Name: <input type="text" id="username" /> </div>
+            <div><input id="rememberMe" type="checkbox" /> RememberMe </div>
             <Button style={{ display: "block", margin: "auto" }} type="submit" onClick={handleSubmit}> Submit </Button>
           </div>  
         : <div>

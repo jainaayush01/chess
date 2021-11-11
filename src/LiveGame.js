@@ -245,7 +245,7 @@ function LiveGame() {
               dropSquareStyle={dropSquareStyle}
               draggable={draggable}
               orientation={orientation}
-              // width={maxWidth}
+              width={maxWidth}
               calcWidth={
                 (size) => ( size.screenWidth > maxWidth && size.screenHeight > maxWidth)
                   ? (Math.min(size.screenWidth, size.screenHeight) - 100)
