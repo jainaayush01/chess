@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Button, Input, Typography } from '@material-ui/core';
 
-import { v4 as uuidv4 } from 'uuid';
 import { socket } from './socket';
-
+import { generateGameId, validateGameId } from './utils.js';
 
 
 function Room({ username }) {
@@ -23,7 +22,7 @@ function Room({ username }) {
 
 
   const handleCreateGame = () => {
-    const newGameId = uuidv4();
+    const newGameId = generateGameId();
 
     socket.emit('createGame', { username: username, gameId: newGameId });
     history.push({
@@ -39,6 +38,10 @@ function Room({ username }) {
 
   const handleJoinGame = () => {
     var submittedGameId = gameId;
+    if (!validateGameId(submittedGameId)) {
+      alert('invalid game id');
+      return;
+    }
     socket.emit('startGame', { username: username, gameId: submittedGameId });
     history.push({
       pathname: `/room/live/${submittedGameId}`,
