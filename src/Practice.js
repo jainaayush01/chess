@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Chessboard from 'chessboardjsx';
+import React, { useState } from "react";
+import Chessboard from "chessboardjsx";
 import Chess from "chess.js";
 
 // import './App.css';
@@ -11,7 +11,7 @@ const chessboardStyle = {
   flexWrap: "wrap",
   marginTop: 30,
   marginBottom: 10,
-}
+};
 
 const maxWidth = 500;
 
@@ -37,43 +37,43 @@ function Practice() {
             [c]: {
               background:
                 "radial-gradient(circle, #fffc00 36%, transparent 40%)",
-              borderRadius: "50%"
-            }
+              borderRadius: "50%",
+            },
           },
           ...squareStyling({
             history: history,
-            pieceSquare: pieceSquare
-          })
+            pieceSquare: pieceSquare,
+          }),
         };
       },
-      {}
+      {},
     );
 
     setSquareStyles({ ...squareStyles, ...highlightStyles });
-  }
+  };
 
   const handleOnDrop = (props) => {
     const { piece, sourceSquare, targetSquare } = props;
     let move = game.move({
       from: sourceSquare,
       to: targetSquare,
-      promotion: "q"
+      promotion: "q",
     });
 
     if (move === null) return;
     if (game.game_over()) {
-      alert('game over');
+      alert("game over");
     }
 
-    setFenString(game.fen())
+    setFenString(game.fen());
     setHistory(game.history({ verbose: true }));
     setSquareStyles(squareStyling({ pieceSquare, history }));
-  }
+  };
 
   const handleOnMouseOverSquare = (square) => {
     let moves = game.moves({
       square: square,
-      verbose: true
+      verbose: true,
     });
 
     if (moves.length === 0) return;
@@ -83,44 +83,49 @@ function Practice() {
       squaresToHighlight.push(moves[i].to);
     }
     highlightSquare(square, squaresToHighlight);
-  }
+  };
 
   const handleOnMouseOutSquare = (square) => {
     removeHighlightSquare(square);
-  }
+  };
 
-  const handleOnDragOverSquare = square => {
+  const handleOnDragOverSquare = (square) => {
     setDropSquareStyle(
       square === "e4" || square === "d4" || square === "e5" || square === "d5"
         ? { backgroundColor: "cornFlowerBlue" }
-        : { boxShadow: "inset 0 0 1px 4px rgb(255, 255, 0)" }
+        : { boxShadow: "inset 0 0 1px 4px rgb(255, 255, 0)" },
     );
   };
 
   const handleOnSquareClick = (square) => {
-    setSquareStyles(squareStyling({ pieceSquare: square, history: game.history({ verbose: true }) }));
+    setSquareStyles(
+      squareStyling({
+        pieceSquare: square,
+        history: game.history({ verbose: true }),
+      }),
+    );
     setPieceSquare(square);
 
     let move = game.move({
       from: pieceSquare,
       to: square,
-      promotion: "q"
+      promotion: "q",
     });
 
     if (move === null) return;
 
     if (game.game_over()) {
-      alert('game over');
+      alert("game over");
     }
 
-    setFenString(game.fen())
+    setFenString(game.fen());
     setHistory(game.history({ verbose: true }));
     setPieceSquare("");
-  }
+  };
 
   const handleOnSquareRightClick = (square) => {
-    setSquareStyles({ [square]: { backgroundColor: "deepPink" } })
-  }
+    setSquareStyles({ [square]: { backgroundColor: "deepPink" } });
+  };
 
   const squareStyling = ({ pieceSquare, history }) => {
     const sourceSquare = history.length && history[history.length - 1].from;
@@ -130,19 +135,19 @@ function Practice() {
       [pieceSquare]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
       ...(history.length && {
         [sourceSquare]: {
-          backgroundColor: "rgba(255, 255, 0, 0.4)"
-        }
+          backgroundColor: "rgba(255, 255, 0, 0.4)",
+        },
       }),
       ...(history.length && {
         [targetSquare]: {
-          backgroundColor: "rgba(255, 255, 0, 0.4)"
-        }
-      })
+          backgroundColor: "rgba(255, 255, 0, 0.4)",
+        },
+      }),
     };
   };
 
   return (
-    <div className="Practice" style={chessboardStyle} >
+    <div className="Practice" style={chessboardStyle}>
       <Chessboard
         position={fenString}
         onDrop={handleOnDrop}
@@ -154,10 +159,10 @@ function Practice() {
         squareStyles={squareStyles}
         dropSquareStyle={dropSquareStyle}
         // width={maxWidth}
-        calcWidth={(size) => 
-          (size.screenWidth > maxWidth && size.screenHeight > maxWidth)
-            ? (Math.min(size.screenWidth, size.screenHeight) - 100)
-            : (Math.min(size.screenWidth, size.screenHeight))
+        calcWidth={(size) =>
+          size.screenWidth > maxWidth && size.screenHeight > maxWidth
+            ? Math.min(size.screenWidth, size.screenHeight) - 100
+            : Math.min(size.screenWidth, size.screenHeight)
         }
       />
     </div>
