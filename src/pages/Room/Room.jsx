@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Button, Input, Typography } from "@material-ui/core";
 
-import { socket } from "./socket";
-import { generateGameId, validateGameId } from "./utils.js";
+import { socket } from "../../utils/socket";
+import { generateGameId, validateGameId } from "../../utils/index.js";
 
 function Room({ username }) {
   const history = useHistory();
@@ -76,8 +76,7 @@ function Room({ username }) {
               setJoinGame(true);
             }}
           >
-            {" "}
-            Join a Game{" "}
+            Join a Game
           </Button>
         </>
       )}

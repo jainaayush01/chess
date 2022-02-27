@@ -10,11 +10,8 @@ import {
 } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
-import Practice from "./Practice";
-import Room from "./Room";
-import Home from "./Home";
-import NotFound from "./NotFound";
-import Live from "./LiveGame";
+import { NotFound, Room, Home, Practice } from "./pages";
+import { LiveGame } from "./components";
 
 import "./App.css";
 
@@ -100,7 +97,7 @@ function App() {
         ) : (
           <div>
             <Switch>
-              <Route path="/" component={Home} exact />
+              <Route path="/" component={Room} exact />
               <Route path="/practice" component={Practice} exact />
               <Route
                 path="/room"
@@ -109,7 +106,7 @@ function App() {
               />
               <Route
                 path="/room/live/:gameId"
-                render={() => <Live username={username} />}
+                render={() => <LiveGame username={username} />}
                 exact
               />
               <Route component={NotFound} />

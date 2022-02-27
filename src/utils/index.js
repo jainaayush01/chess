@@ -1,4 +1,4 @@
-export const generateGameId = () => {
+const generateGameId = () => {
   var tempId = "";
   var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   var charactersLength = characters.length;
@@ -11,7 +11,9 @@ export const generateGameId = () => {
   return tempId;
 };
 
-export const validateGameId = (roomId) => {
+const validateGameId = (roomId) => {
   var patt = new RegExp("(([A-Za-z]{4})(-)){2}[A-Za-z]{4}");
   return patt.test(roomId.trim()) && roomId.length == 14;
 };
+
+export {validateGameId, generateGameId}

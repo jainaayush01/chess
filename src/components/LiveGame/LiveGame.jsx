@@ -3,7 +3,7 @@ import Chessboard from "chessboardjsx";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import Chess from "chess.js";
 
-import { socket, mySocketId } from "./socket";
+import { socket, mySocketId } from "../../utils/socket";
 import { Typography } from "@material-ui/core";
 
 import "./LiveGame.css";
