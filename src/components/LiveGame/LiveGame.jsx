@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Chessboard from "chessboardjsx";
-import { useParams, useLocation, useHistory } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Chess from "chess.js";
 
 import { socket, mySocketId } from "../../utils/socket";
 import { Typography } from "@material-ui/core";
 
-import "./LiveGame.css";
-
-const chessboardStyle = {
-  display: "flex",
-  // justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  marginTop: 10,
-  marginBottom: 10,
-  marginLeft: 40,
-};
+import styles from "./LiveGame.module.scss";
 
 const maxWidth = 500;
 
@@ -25,7 +15,7 @@ let game = new Chess();
 function LiveGame() {
   let { gameId } = useParams();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [fenString, setFenString] = useState("start");
   const [dropSquareStyle, setDropSquareStyle] = useState({});
   const [squareStyles, setSquareStyles] = useState({});
@@ -37,9 +27,9 @@ function LiveGame() {
   const [orientation, setOrientation] = useState("white");
 
   useEffect(() => {
+    console.log(location);
     if (!location.state) {
-      history.push({
-        pathname: `/room`,
+      navigate(`/room`, {
         state: {
           gameId: gameId,
         },
@@ -55,9 +45,7 @@ function LiveGame() {
 
     socket.on("playerLeft", () => {
       console.log("playerLeft");
-      history.push({
-        pathname: `/room`,
-      });
+      navigate(`/room`);
       alert("Opponent has left the game");
       return;
     });
@@ -258,13 +246,13 @@ function LiveGame() {
   return (
     <>
       {displayBoard ? (
-        <div className="LiveGame">
-          <Typography className="username" variant="h6">
+        <div className={styles.LiveGame}>
+          <Typography className={styles.username} variant="h6">
             {orientation === "black"
               ? gameInfo.p1Username
               : gameInfo.p2Username}
           </Typography>
-          <div style={chessboardStyle}>
+          <div className={styles.chessboardStyle}>
             <Chessboard
               position={fenString}
               onDrop={handleOnDrop}
@@ -285,7 +273,7 @@ function LiveGame() {
               }
             />
           </div>
-          <Typography className="username" variant="h6">
+          <Typography className={styles.username} variant="h6">
             {orientation === "white"
               ? gameInfo.p1Username
               : gameInfo.p2Username}

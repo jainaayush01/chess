@@ -2,16 +2,7 @@ import React, { useState } from "react";
 import Chessboard from "chessboardjsx";
 import Chess from "chess.js";
 
-// import './App.css';
-
-const chessboardStyle = {
-  display: "flex",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  marginTop: 30,
-  marginBottom: 10,
-};
+import styles from "./Practice.module.scss";
 
 const maxWidth = 500;
 
@@ -147,7 +138,7 @@ function Practice() {
   };
 
   return (
-    <div className="Practice" style={chessboardStyle}>
+    <div className={styles.chessboardStyle}>
       <Chessboard
         position={fenString}
         onDrop={handleOnDrop}

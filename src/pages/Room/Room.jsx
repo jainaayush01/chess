@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { Button, Input, Typography } from "@material-ui/core";
 
 import { socket } from "../../utils/socket";
 import { generateGameId, validateGameId } from "../../utils/index.js";
 
+import styles from "./Room.module.scss";
+
 function Room({ username }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [joinGame, setJoinGame] = useState(false);
   const [gameId, setGameId] = useState("RoomCode");
@@ -22,8 +24,7 @@ function Room({ username }) {
     const newGameId = generateGameId();
 
     socket.emit("createGame", { username: username, gameId: newGameId });
-    history.push({
-      pathname: `/room/live/${newGameId}`,
+    navigate(`/room/${newGameId}`, {
       state: {
         isCreator: true,
         username: username,
@@ -40,8 +41,7 @@ function Room({ username }) {
       return;
     }
     socket.emit("startGame", { username: username, gameId: submittedGameId });
-    history.push({
-      pathname: `/room/live/${submittedGameId}`,
+    navigate(`/room/${submittedGameId}`, {
       state: {
         isCreator: false,
         username: username,
@@ -59,10 +59,8 @@ function Room({ username }) {
           <Input
             required={true}
             id="roomcode"
-            placeholder={gameId}
-            onChange={(e) => {
-              setGameId(e.target.value);
-            }}
+            value={gameId}
+            onChange={(e) => setGameId(e.target.value)}
           />
           <Button type="submit" onClick={handleJoinGame}>
             Enter
@@ -71,13 +69,7 @@ function Room({ username }) {
       ) : (
         <>
           <Button onClick={handleCreateGame}> Create a New Game </Button>
-          <Button
-            onClick={() => {
-              setJoinGame(true);
-            }}
-          >
-            Join a Game
-          </Button>
+          <Button onClick={() => setJoinGame(true)}>Join a Game</Button>
         </>
       )}
     </>
