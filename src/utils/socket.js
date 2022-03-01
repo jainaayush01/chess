@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -13,7 +13,4 @@ socket.on("connect", () => {
   return;
 });
 
-export {
-  socket,
-  mySocketId
-}
+export { socket, mySocketId };

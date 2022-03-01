@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Chessboard from 'chessboardjsx';
-import { useParams, useLocation, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import Chessboard from "chessboardjsx";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Chess from "chess.js";
 
-import { socket, mySocketId } from './socket';
-import { Typography } from '@material-ui/core';
+import { socket, mySocketId } from "../../utils/socket";
+import { Typography } from "@material-ui/core";
 
-import './LiveGame.css'
-
-const chessboardStyle = {
-  display: "flex",
-  // justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  marginTop: 10,
-  marginBottom: 10,
-  marginLeft: 40
-}
-
+import styles from "./LiveGame.module.scss";
 
 const maxWidth = 500;
 
@@ -26,7 +15,7 @@ let game = new Chess();
 function LiveGame() {
   let { gameId } = useParams();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [fenString, setFenString] = useState("start");
   const [dropSquareStyle, setDropSquareStyle] = useState({});
   const [squareStyles, setSquareStyles] = useState({});
@@ -35,44 +24,43 @@ function LiveGame() {
   const [displayBoard, setDisplayBoard] = useState(false);
   const [gameInfo, setGameInfo] = useState({});
   const [draggable, setDraggable] = useState(false);
-  const [orientation, setOrientation] = useState('white');
+  const [orientation, setOrientation] = useState("white");
 
   useEffect(() => {
+    console.log(location);
     if (!location.state) {
-      history.push({
-        pathname: `/room`,
+      navigate(`/room`, {
         state: {
-          gameId: gameId
-        }
-      })
+          gameId: gameId,
+        },
+      });
       return;
-    }
-    else {
+    } else {
       if (location.state.color) {
-        setOrientation('white')
-      }
-      else {
-        setOrientation('black')
+        setOrientation("white");
+      } else {
+        setOrientation("black");
       }
     }
 
     socket.on("playerLeft", () => {
-      console.log('playerLeft');
-      history.push({
-        pathname: `/room`
-      })
-      alert('Opponent has left the game');
+      console.log("playerLeft");
+      navigate(`/room`);
+      alert("Opponent has left the game");
       return;
-    })
+    });
 
-    socket.on("status", statusUpdate => {
-      alert(statusUpdate)
-      if (statusUpdate === 'This game session does not exist.' || statusUpdate === 'There are already 2 people playing in this room.') {
+    socket.on("status", (statusUpdate) => {
+      alert(statusUpdate);
+      if (
+        statusUpdate === "This game session does not exist." ||
+        statusUpdate === "There are already 2 people playing in this room."
+      ) {
         setDisplayBoard(false);
       }
-    })
+    });
 
-    socket.on('movePlayed', (gameMove) => {
+    socket.on("movePlayed", (gameMove) => {
       const { socketId, from, to } = gameMove;
       if (mySocketId === socketId) {
         setDraggable(false);
@@ -81,27 +69,32 @@ function LiveGame() {
       let move = game.move({
         from: from,
         to: to,
-        promotion: "q"
-      })
+        promotion: "q",
+      });
       if (move === null) return;
       if (game.game_over()) {
-        alert('game over');
+        alert("game over");
       }
       setDraggable(true);
       setFenString(game.fen());
       setGameHistory(game.history({ verbose: true }));
-      setSquareStyles(squareStyling({ pieceSquare, gameHistory: game.history({ verbose: true }) }));
-    })
+      setSquareStyles(
+        squareStyling({
+          pieceSquare,
+          gameHistory: game.history({ verbose: true }),
+        }),
+      );
+    });
 
-    socket.on('gameStarted', (gameInfo) => {
+    socket.on("gameStarted", (gameInfo) => {
       setGameInfo(gameInfo);
       setDisplayBoard(true);
-    })
-    socket.on('gameCreated', (gameInfo) => {
+    });
+    socket.on("gameCreated", (gameInfo) => {
       setGameInfo(gameInfo);
       setDraggable(true);
-    })
-  }, [])
+    });
+  }, []);
 
   const removeHighlightSquare = () => {
     setSquareStyles(squareStyling({ pieceSquare, gameHistory }));
@@ -116,45 +109,55 @@ function LiveGame() {
             [c]: {
               background:
                 "radial-gradient(circle, #fffc00 36%, transparent 40%)",
-              borderRadius: "50%"
-            }
+              borderRadius: "50%",
+            },
           },
           ...squareStyling({
             gameHistory: gameHistory,
-            pieceSquare: pieceSquare
-          })
+            pieceSquare: pieceSquare,
+          }),
         };
       },
-      {}
+      {},
     );
 
     setSquareStyles({ ...squareStyles, ...highlightStyles });
-  }
+  };
 
   const handleOnDrop = (props) => {
     const { piece, sourceSquare, targetSquare } = props;
     let move = game.move({
       from: sourceSquare,
       to: targetSquare,
-      promotion: "q"
+      promotion: "q",
     });
-
 
     if (move === null) return;
     if (game.game_over()) {
-      alert('game over');
+      alert("game over");
     }
-    socket.emit('playMove', { gameId: gameId, socketId: mySocketId, from: move.from, to: move.to, promotion: "q" });
+    socket.emit("playMove", {
+      gameId: gameId,
+      socketId: mySocketId,
+      from: move.from,
+      to: move.to,
+      promotion: "q",
+    });
 
-    setFenString(game.fen())
+    setFenString(game.fen());
     setGameHistory(game.history({ verbose: true }));
-    setSquareStyles(squareStyling({ pieceSquare, gameHistory: game.history({ verbose: true }) }));
-  }
+    setSquareStyles(
+      squareStyling({
+        pieceSquare,
+        gameHistory: game.history({ verbose: true }),
+      }),
+    );
+  };
 
   const handleOnMouseOverSquare = (square) => {
     let moves = game.moves({
       square: square,
-      verbose: true
+      verbose: true,
     });
 
     if (moves.length === 0) return;
@@ -164,75 +167,92 @@ function LiveGame() {
       squaresToHighlight.push(moves[i].to);
     }
     highlightSquare(square, squaresToHighlight);
-  }
+  };
 
   const handleOnMouseOutSquare = (square) => {
     removeHighlightSquare(square);
-  }
+  };
 
-  const handleOnDragOverSquare = square => {
+  const handleOnDragOverSquare = (square) => {
     setDropSquareStyle(
       square === "e4" || square === "d4" || square === "e5" || square === "d5"
         ? { backgroundColor: "cornFlowerBlue" }
-        : { boxShadow: "inset 0 0 1px 4px rgb(255, 255, 0)" }
+        : { boxShadow: "inset 0 0 1px 4px rgb(255, 255, 0)" },
     );
   };
 
   const handleOnSquareClick = (square) => {
-    setSquareStyles(squareStyling({ pieceSquare: square, gameHistory: game.history({ verbose: true }) }));
+    setSquareStyles(
+      squareStyling({
+        pieceSquare: square,
+        gameHistory: game.history({ verbose: true }),
+      }),
+    );
     setPieceSquare(square);
 
-    if(!draggable) {
+    if (!draggable) {
       return;
     }
 
     let move = game.move({
       from: pieceSquare,
       to: square,
-      promotion: "q"
+      promotion: "q",
     });
 
     if (move === null) return;
 
-    socket.emit('playMove', { gameId: gameId, socketId: mySocketId, from: move.from, to: move.to, promotion: "q" });
+    socket.emit("playMove", {
+      gameId: gameId,
+      socketId: mySocketId,
+      from: move.from,
+      to: move.to,
+      promotion: "q",
+    });
     if (game.game_over()) {
-      alert('game over');
+      alert("game over");
     }
-    
-    setFenString(game.fen())
+
+    setFenString(game.fen());
     setGameHistory(game.history({ verbose: true }));
     setPieceSquare("");
-  }
+  };
 
   const handleOnSquareRightClick = (square) => {
-    setSquareStyles({ [square]: { backgroundColor: "deepPink" } })
-  }
+    setSquareStyles({ [square]: { backgroundColor: "deepPink" } });
+  };
 
   const squareStyling = ({ pieceSquare, gameHistory }) => {
-    const sourceSquare = gameHistory.length > 1 && gameHistory[gameHistory.length - 1].from;
-    const targetSquare = gameHistory.length > 1 && gameHistory[gameHistory.length - 1].to;
+    const sourceSquare =
+      gameHistory.length > 1 && gameHistory[gameHistory.length - 1].from;
+    const targetSquare =
+      gameHistory.length > 1 && gameHistory[gameHistory.length - 1].to;
 
     return {
       [pieceSquare]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
       ...(gameHistory.length && {
         [sourceSquare]: {
-          backgroundColor: "rgba(255, 255, 0, 0.4)"
-        }
+          backgroundColor: "rgba(255, 255, 0, 0.4)",
+        },
       }),
       ...(gameHistory.length && {
         [targetSquare]: {
-          backgroundColor: "rgba(255, 255, 0, 0.4)"
-        }
-      })
+          backgroundColor: "rgba(255, 255, 0, 0.4)",
+        },
+      }),
     };
   };
 
   return (
     <>
-      {displayBoard ?
-        <div className="LiveGame">
-          <Typography className="username" variant="h6">{orientation === 'black' ? gameInfo.p1Username : gameInfo.p2Username}</Typography>
-          <div style={chessboardStyle} >
+      {displayBoard ? (
+        <div className={styles.LiveGame}>
+          <Typography className={styles.username} variant="h6">
+            {orientation === "black"
+              ? gameInfo.p1Username
+              : gameInfo.p2Username}
+          </Typography>
+          <div className={styles.chessboardStyle}>
             <Chessboard
               position={fenString}
               onDrop={handleOnDrop}
@@ -246,20 +266,22 @@ function LiveGame() {
               draggable={draggable}
               orientation={orientation}
               width={maxWidth}
-              calcWidth={
-                (size) => ( size.screenWidth > maxWidth && size.screenHeight > maxWidth)
-                  ? (Math.min(size.screenWidth, size.screenHeight) - 100)
-                  : (Math.min(size.screenWidth, size.screenHeight))
+              calcWidth={(size) =>
+                size.screenWidth > maxWidth && size.screenHeight > maxWidth
+                  ? Math.min(size.screenWidth, size.screenHeight) - 100
+                  : Math.min(size.screenWidth, size.screenHeight)
               }
             />
           </div>
-          <Typography className="username" variant="h6">{orientation === 'white' ? gameInfo.p1Username : gameInfo.p2Username}</Typography>
+          <Typography className={styles.username} variant="h6">
+            {orientation === "white"
+              ? gameInfo.p1Username
+              : gameInfo.p2Username}
+          </Typography>
         </div>
-        :
-        <div>
-          Let your friend join the game
-        </div>
-      }
+      ) : (
+        <div>Let your friend join the game</div>
+      )}
     </>
   );
 }

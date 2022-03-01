@@ -1,0 +1,46 @@
+.home {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+    // justify-content: center;
+  margin-top: 5%;
+}
+
+.chessGameImage {
+  height: 80vh;
+
+}
+
+.imageDiv {
+  margin-left: 10%;
+  margin-right: 12%;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10%;
+}
+
+.title {
+  margin-bottom: 5%;
+  width: 400px;
+}
+
+.btn {
+  font-size: 30px !important;
+  margin-bottom: 20px !important;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// .practiceBtn {
+//   font-size: 30px !important;
+// }
+
+// .playLiveBtn {
+//   font-size: 30px !important;
+// }
