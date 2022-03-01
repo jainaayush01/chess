@@ -7,6 +7,7 @@ import { socket, mySocketId } from "../../utils/socket";
 import { Typography } from "@material-ui/core";
 
 import styles from "./LiveGame.module.scss";
+import { Share } from "../../components";
 
 const maxWidth = 500;
 
@@ -280,7 +281,10 @@ function LiveGame() {
           </Typography>
         </div>
       ) : (
-        <div>Let your friend join the game</div>
+        <div className={styles.waitArea}>
+          <p className={styles.waitText}> Invite your friend to join you</p>
+          <Share link={window.location.href} />
+        </div>
       )}
     </>
   );

@@ -7,13 +7,17 @@ import { generateGameId, validateGameId } from "../../utils/index.js";
 
 import styles from "./Room.module.scss";
 
-function Room({ username }) {
+function Room() {
   const navigate = useNavigate();
   const location = useLocation();
   const [joinGame, setJoinGame] = useState(false);
   const [gameId, setGameId] = useState("RoomCode");
+  const [username, setUsername] = useState(undefined);
 
   useEffect(() => {
+    if (localStorage.getItem("username")) {
+      setUsername(localStorage.getItem("username"));
+    }
     if (location.state) {
       setJoinGame(true);
       setGameId(location.state.gameId);

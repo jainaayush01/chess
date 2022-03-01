@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
+
 .chessboardStyle {
   display: "flex";
   // justifyContent: "space-around";
@@ -6,4 +8,25 @@
   margin-top: 40px;
   margin-bottom: 10px;
   margin-left: 40px;
+}
+
+.username {
+  text-align: left;
+}
+
+.LiveGame {
+  margin: 10px auto;
+}
+
+.waitArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.waitText {
+  font-size: 20px;
+  font-family: DM Sans;
+  margin-bottom: 10px;
 }
