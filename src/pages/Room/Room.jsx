@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { Button, Input, Typography } from "@material-ui/core";
+import { Button, TextField, Typography } from "@material-ui/core";
 
 import { socket } from "../../utils/socket";
 import { generateGameId, validateGameId } from "../../utils/index.js";
@@ -11,7 +11,7 @@ function Room() {
   const navigate = useNavigate();
   const location = useLocation();
   const [joinGame, setJoinGame] = useState(false);
-  const [gameId, setGameId] = useState("RoomCode");
+  const [gameId, setGameId] = useState("");
   const [username, setUsername] = useState(undefined);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function Room() {
     const newGameId = generateGameId();
 
     socket.emit("createGame", { username: username, gameId: newGameId });
-    navigate(`/room/${newGameId}`, {
+    navigate(`/game/${newGameId}`, {
       state: {
         isCreator: true,
         username: username,
@@ -45,7 +45,7 @@ function Room() {
       return;
     }
     socket.emit("startGame", { username: username, gameId: submittedGameId });
-    navigate(`/room/${submittedGameId}`, {
+    navigate(`/game/${submittedGameId}`, {
       state: {
         isCreator: false,
         username: username,
@@ -57,25 +57,47 @@ function Room() {
 
   return (
     <>
-      {joinGame ? (
-        <>
-          <Typography>Enter Room Code: </Typography>
-          <Input
-            required={true}
-            id="roomcode"
-            value={gameId}
-            onChange={(e) => setGameId(e.target.value)}
-          />
-          <Button type="submit" onClick={handleJoinGame}>
-            Enter
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={handleCreateGame}> Create a New Game </Button>
-          <Button onClick={() => setJoinGame(true)}>Join a Game</Button>
-        </>
-      )}
+      <div className={styles.page}>
+        {joinGame ? (
+          <div className={styles.joinContainer}>
+            <Typography>Enter Room Code: </Typography>
+            <TextField
+              required={true}
+              id="roomcode"
+              value={gameId}
+              placeholder="Enter Room Code"
+              fullWidth
+              className={styles.textField}
+              InputProps={{className: styles.inputBase}}
+              onChange={(e) => setGameId(e.target.value)}
+            />
+            <button
+              size="medium"
+              className={`${styles.button} ${styles.button__primary}`}
+              onClick={handleJoinGame}
+            >
+              Join
+            </button>
+          </div>
+        ) : (
+          <>
+            <button
+              size="medium"
+              className={`${styles.button} ${styles.button__primary}`}
+              onClick={handleCreateGame}
+            >
+              Create a New Game
+            </button>
+            <button
+              size="medium"
+              className={`${styles.button} ${styles.button__primary}`}
+              onClick={() => setJoinGame(true)}
+            >
+              Join a Game
+            </button>
+          </>
+        )}
+      </div>
     </>
   );
 }

@@ -37,10 +37,13 @@ export default function AuthDialog({ auth, setAuth }) {
   };
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <div className={styles.page}>
+      <button
+        className={`${styles.button} ${styles.button__primary}`}
+        onClick={handleClickOpen}
+      >
         Login
-      </Button>
+      </button>
       <Dialog open={open} onClose={handleClose}>
         {/* <DialogTitle>Login</DialogTitle> */}
         <DialogContent>
@@ -64,7 +67,7 @@ export default function AuthDialog({ auth, setAuth }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Submit</Button>
+          <button className={`${styles.button} ${styles.button__primary}`} onClick={handleClose}>Submit</button>
         </DialogActions>
       </Dialog>
     </div>

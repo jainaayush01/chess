@@ -1,21 +1,36 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+.LiveGame {
+  padding: 1rem;
+  display: "flex";
+  align-items: "center";
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .chessboardStyle {
-  display: "flex";
-  // justifyContent: "space-around";
-  align-items: "center";
-  flex-wrap: "wrap";
-  margin-top: 40px;
-  margin-bottom: 10px;
-  margin-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:3rem;
+}
+
+.chessboardStyle div {
+  // padding: 1rem;
 }
 
 .username {
   text-align: left;
-}
-
-.LiveGame {
-  margin: 10px auto;
 }
 
 .waitArea {
@@ -27,6 +42,6 @@
 
 .waitText {
   font-size: 20px;
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   margin-bottom: 10px;
 }

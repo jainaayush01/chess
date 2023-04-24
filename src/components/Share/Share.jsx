@@ -31,9 +31,9 @@ const Share = ({ link }) => {
 
   return (
     <>
-      <div className={styles.shareBtn} onClick={handleClickOpen}>
+      <button className={`${styles.button} ${styles.button__primary}`} onClick={handleClickOpen}>
         Share
-      </div>
+      </button>
       <Dialog open={open} onClose={handleClose}>
         <div className={styles.modal}>
           <div className={styles.content}>

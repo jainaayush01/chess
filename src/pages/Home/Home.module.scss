@@ -1,9 +1,10 @@
-.home {
+.page {
   display: flex;
   flex-direction: row;
   align-items: center;
-    // justify-content: center;
-  margin-top: 5%;
+  justify-content: space-around;
+  gap: 1rem;
+  min-height: calc(100vh - 60px);
 }
 
 .chessGameImage {
@@ -11,36 +12,46 @@
 
 }
 
-.imageDiv {
-  margin-left: 10%;
-  margin-right: 12%;
-}
-
 .rightContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 10%;
+  gap: 2rem;
 }
 
 .title {
-  margin-bottom: 5%;
   width: 400px;
 }
 
-.btn {
-  font-size: 30px !important;
-  margin-bottom: 20px !important;
-  &:hover {
-    cursor: pointer;
-  }
+.button {
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  color: #F5F5F5;
+
+  border-color: transparent;
+  padding: 14px 20px;
+
+  cursor: pointer;
 }
 
-// .practiceBtn {
-//   font-size: 30px !important;
-// }
+.button:focus {
+  outline: none;
+}
 
-// .playLiveBtn {
-//   font-size: 30px !important;
-// }
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button.button__primary {
+  background: linear-gradient(115.11deg, #3E69FA 16.81%, rgba(45, 174, 245, 0.58) 78.52%);
+  border: none;
+}

@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato, sans-serif&display=swap");
+
+.header {
+    position: fixed;
+    top: 0;
+
+    padding: 10px 30px;
+    width: 100%;
+    height: 40px;
+    z-index: 10;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #2A2F35;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    font-family: 'Lato', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+}

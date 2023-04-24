@@ -1,4 +1,36 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato, sans-serif&display=swap");
+
+.button {
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  color: #F5F5F5;
+
+  border-color: transparent;    
+  padding: 14px 20px;
+
+  cursor: pointer;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button.button__primary {
+  background: linear-gradient(115.11deg, #3E69FA 16.81%, rgba(45, 174, 245, 0.58) 78.52%);
+  border: none;
+}
 
 .shareBtn {
   width: 100px;
@@ -8,13 +40,13 @@
   align-items: center;
   padding: 8px 16px;
 
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
   line-height: 28px;
   letter-spacing: 0.02em;
-  background-color: aquamarine;
+  // background-color: aquamarine;
 
   &:hover {
     cursor: pointer;
@@ -30,7 +62,7 @@
 .primaryText {
   margin: 0px;
 
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
@@ -46,7 +78,7 @@
 .secondaryText {
   margin: 0px;
 
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -62,7 +94,7 @@
   // justify-content: center
   align-items: center;
   
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -78,7 +110,7 @@
   padding: 5px;
   padding-right: 10px;
 
-  font-family: DM Sans;
+  font-family: 'Lato', sans-serif;
   font-size: 20px;
 }
 

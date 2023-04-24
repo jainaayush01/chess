@@ -138,24 +138,26 @@ function Practice() {
   };
 
   return (
-    <div className={styles.chessboardStyle}>
-      <Chessboard
-        position={fenString}
-        onDrop={handleOnDrop}
-        onSquareClick={handleOnSquareClick}
-        onSquareRightClick={handleOnSquareRightClick}
-        onMouseOverSquare={handleOnMouseOverSquare}
-        onMouseOutSquare={handleOnMouseOutSquare}
-        onDragOverSquare={handleOnDragOverSquare}
-        squareStyles={squareStyles}
-        dropSquareStyle={dropSquareStyle}
-        // width={maxWidth}
-        calcWidth={(size) =>
-          size.screenWidth > maxWidth && size.screenHeight > maxWidth
-            ? Math.min(size.screenWidth, size.screenHeight) - 100
-            : Math.min(size.screenWidth, size.screenHeight)
-        }
-      />
+    <div className={styles.page}>
+      <div className={styles.chessboardStyle}>
+        <Chessboard
+          position={fenString}
+          onDrop={handleOnDrop}
+          onSquareClick={handleOnSquareClick}
+          onSquareRightClick={handleOnSquareRightClick}
+          onMouseOverSquare={handleOnMouseOverSquare}
+          onMouseOutSquare={handleOnMouseOutSquare}
+          onDragOverSquare={handleOnDragOverSquare}
+          squareStyles={squareStyles}
+          dropSquareStyle={dropSquareStyle}
+          // width={maxWidth}
+          calcWidth={(size) =>
+            size.screenWidth > maxWidth && size.screenHeight > maxWidth
+              ? Math.min(size.screenWidth, size.screenHeight) - 100
+              : Math.min(size.screenWidth, size.screenHeight)
+          }
+        />
+      </div>
     </div>
   );
 }

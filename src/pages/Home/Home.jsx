@@ -7,38 +7,34 @@ import { Button, Typography } from "@material-ui/core";
 function Home() {
   const navigate = useNavigate();
   const handleLiveBtn = () => {
-    navigate("/room");
+    navigate("/game");
   };
   const handlePracticeBtn = () => {
     navigate("/practice");
   };
   return (
-    <div className={styles.home}>
+    <div className={styles.page}>
       <div className={styles.imageDiv}>
         <img src={ChessGameImage} className={styles.chessGameImage} />
       </div>
       <div className={styles.rightContainer}>
-        <div className={styles.title}>
-          <Typography variant="h5">
-            Play Chess with your friends with live chat
-          </Typography>
-        </div>
-        <Button
-          variant="contained"
-          size="large"
-          className={styles.btn}
+        <Typography variant="h5">
+          Play Chess with your friends with live chat
+        </Typography>
+        <button
+          size="medium"
+          className={`${styles.button} ${styles.button__primary}`}
           onClick={handlePracticeBtn}
         >
           Practice
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          className={styles.btn}
+        </button>
+        <button
+          size="medium"
+          className={`${styles.button} ${styles.button__primary}`}
           onClick={handleLiveBtn}
         >
           Play with a Friend
-        </Button>
+        </button>
       </div>
     </div>
   );

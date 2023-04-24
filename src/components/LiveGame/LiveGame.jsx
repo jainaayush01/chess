@@ -30,7 +30,7 @@ function LiveGame() {
   useEffect(() => {
     console.log(location);
     if (!location.state) {
-      navigate(`/room`, {
+      navigate(`/game`, {
         state: {
           gameId: gameId,
         },
@@ -46,7 +46,7 @@ function LiveGame() {
 
     socket.on("playerLeft", () => {
       console.log("playerLeft");
-      navigate(`/room`);
+      navigate(`/game`);
       alert("Opponent has left the game");
       return;
     });
@@ -248,11 +248,6 @@ function LiveGame() {
     <>
       {displayBoard ? (
         <div className={styles.LiveGame}>
-          <Typography className={styles.username} variant="h6">
-            {orientation === "black"
-              ? gameInfo.p1Username
-              : gameInfo.p2Username}
-          </Typography>
           <div className={styles.chessboardStyle}>
             <Chessboard
               position={fenString}
@@ -270,15 +265,25 @@ function LiveGame() {
               calcWidth={(size) =>
                 size.screenWidth > maxWidth && size.screenHeight > maxWidth
                   ? Math.min(size.screenWidth, size.screenHeight) - 100
-                  : Math.min(size.screenWidth, size.screenHeight)
+                  : Math.min(size.screenWidth, size.screenHeight) - 100
               }
             />
+            <div className={styles.rightContainer}>
+              <Typography className={styles.username} variant="h6">
+                {"Opponent: "}
+                {orientation === "black"
+                  ? gameInfo.p1Username
+                  : gameInfo.p2Username}
+              </Typography>
+
+              <Typography className={styles.username} variant="h6">
+                {"You: "}
+                {orientation === "white"
+                  ? gameInfo.p1Username
+                  : gameInfo.p2Username}
+              </Typography>
+            </div>
           </div>
-          <Typography className={styles.username} variant="h6">
-            {orientation === "white"
-              ? gameInfo.p1Username
-              : gameInfo.p2Username}
-          </Typography>
         </div>
       ) : (
         <div className={styles.waitArea}>
